@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Еще одна программа с 3D-звуками</string>
+    <string name="click_for_play">Нажми для прослушивания</string>
+    <string name="first_sound">ДиалапЪ</string>
+    <string name="first_sound_toast">Ъ-звук, который оценят олд-фаги</string>
+    <string name="about_program">О программе</string>
+</resources>

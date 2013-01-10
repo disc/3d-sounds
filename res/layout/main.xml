@@ -1,18 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-        >
+              android:background="@android:color/darker_gray">
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click for play sound"
-            android:singleLine="false" android:phoneNumber="false" android:password="false"
-            android:layout_gravity="center"/>
-    <ImageButton
-            android:layout_width="fill_parent"
+            android:text="@string/click_for_play"
+            android:layout_gravity="center" android:singleLine="false"
+            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"/>
+    <Button
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"/>
-</LinearLayout>
+            android:text="@string/first_sound"
+            android:id="@+id/button" android:layout_gravity="center" android:onClick="firstSound"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="39dp"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton" android:layout_gravity="center"
+            android:src="@android:drawable/ic_lock_silent_mode"
+            android:layout_alignParentLeft="true" android:layout_alignParentBottom="true"/>
+    <ImageButton
+            android:layout_width="83dp"
+            android:layout_height="56dp"
+            android:id="@+id/imageButton1"
+            android:src="@android:drawable/ic_menu_info_details" android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageButton" android:onClick="showAboutActivity"/>
+    <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:layout_centerHorizontal="true" android:layout_below="@+id/button" android:numStars="5"/>
+</RelativeLayout>
 
