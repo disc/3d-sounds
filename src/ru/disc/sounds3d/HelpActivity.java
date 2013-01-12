@@ -1,4 +1,4 @@
-package com.example.discTest;
+package ru.disc.sounds3d;
 
 import android.app.Activity;
 import android.os.Bundle;

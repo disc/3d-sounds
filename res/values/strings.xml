@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Yet another 3D-sound app</string>
+    <string name="app_name">Sounds of nature 3D</string>
     <string name="click_for_play">Click for play sound</string>
-    <string name="first_sound">Dial-up sound</string>
-    <string name="first_sound_toast">Very old dial-up sound</string>
     <string name="about_program">About</string>
 </resources>
