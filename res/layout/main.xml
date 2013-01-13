@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="@drawable/background">
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/click_for_play"
-            android:layout_gravity="center" android:singleLine="false"
-            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"/>
-    <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView" android:layout_centerHorizontal="true" android:layout_below="@+id/textView"
-            android:dividerHeight="0px" android:divider="@android:color/transparent"
-            android:listSelector="@android:color/transparent"/>
-</RelativeLayout>
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background">
 
+    <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_gravity="center" android:id="@+id/downButtons"
+            android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal" android:orientation="vertical">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/infoButton3" android:src="@drawable/ic_info_button"
+                android:layout_margin="3dp"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/repeatbutton" android:src="@drawable/ic_repeat_button" android:layout_margin="3dp"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/optionButton" android:layout_gravity="center" android:src="@drawable/ic_option_button"
+                android:layout_margin="3dp"/>
+    </TableRow>
+
+    <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:id="@+id/list"
+            android:layout_alignParentTop="true" android:layout_above="@+id/downButtons" >
+        <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/listView" android:layout_centerHorizontal="true"
+                android:dividerHeight="0px" android:divider="@android:color/transparent"
+                android:listSelector="@android:color/transparent" android:layout_alignParentTop="true"
+                android:cacheColorHint="#00000000"
+                />
+    </TableRow>
+</RelativeLayout>
