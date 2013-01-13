@@ -3,4 +3,13 @@
     <string name="app_name">Звуки природы 3D</string>
     <string name="click_for_play">Нажми для прослушивания</string>
     <string name="about_program">О программе</string>
+    <string name="snd_rain_in_tropics">Дождь в тропиках</string>
+    <string name="snd_nature">Природа</string>
+    <string name="snd_cat_purring">Кошачье мурлыканье</string>
+    <string name="snd_wind">Ветер</string>
+    <string name="snd_cuckoo">Кукушка</string>
+    <string name="snd_storm2">Шторм 2</string>
+    <string name="snd_nightingale">Ночной костер</string>
+    <string name="snd_forest">Лес</string>
+    <string name="snd_morning_in_the_forest">Утро в лесу</string>
 </resources>

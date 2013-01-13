@@ -5,14 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String> {
-    private final Context context;
-    private final String[] values;
+import java.util.ArrayList;
+import java.util.List;
 
-    public MySimpleArrayAdapter(Context context, String[] values) {
+public class MySimpleArrayAdapter extends ArrayAdapter<Object> {
+    private final Context context;
+    private final Object[] values;
+
+    public MySimpleArrayAdapter(Context context, Object[] values) {
         super(context, R.layout.rowlayout, values);
         this.context = context;
         this.values = values;
@@ -20,19 +22,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.elTitle);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(values[position]);
-        // Change the icon for Windows and iPhone
-       /* String s = values[position];
-        if (s.startsWith("iPhone")) {
-            imageView.setImageResource(R.drawable.no);
-        } else {
-            imageView.setImageResource(R.drawable.ok);
-        }*/
+
+        textView.setText(textView.getContext().getResources().getText((Integer)values[position]));
 
         return rowView;
     }

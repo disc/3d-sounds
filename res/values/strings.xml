@@ -3,4 +3,13 @@
     <string name="app_name">Sounds of nature 3D</string>
     <string name="click_for_play">Click for play sound</string>
     <string name="about_program">About</string>
+    <string name="snd_rain_in_tropics">Rain in tropics</string>
+    <string name="snd_nature">Nature</string>
+    <string name="snd_cat_purring">Cat purring</string>
+    <string name="snd_wind">Wind</string>
+    <string name="snd_cuckoo">Cuckoo</string>
+    <string name="snd_storm2">Storm 2</string>
+    <string name="snd_nightingale">Nightingale</string>
+    <string name="snd_forest">Forest</string>
+    <string name="snd_morning_in_the_forest">Morning in the forest</string>
 </resources>

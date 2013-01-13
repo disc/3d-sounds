@@ -12,19 +12,26 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
-    String[] values = new String[] {
-        "Звук 1", "Звук 2", "Звук 3", "Звук 4", "Звук 5"
-    };
-    Integer[] sounds = new Integer[] {
-       R.raw.modem_sound,
-       R.raw.hiphopopotamus,
-       R.raw.hiphopopotamus,
-       R.raw.hiphopopotamus,
-       R.raw.hiphopopotamus
-    };
     MediaPlayer mediaPlayer;
+
+    /**
+     * Список элементов вида ключ-значение, где ключ - название трека, значение - путь к файлу
+     */
+    final public Map<Integer,Integer> elements = new HashMap<Integer,Integer>() {{
+        put(R.string.snd_rain_in_tropics, R.raw.rain_in_tropics);
+        put(R.string.snd_nature, R.raw.nature);
+        put(R.string.snd_cat_purring, R.raw.cat_purring);
+        put(R.string.snd_wind, R.raw.wind);
+        put(R.string.snd_cuckoo, R.raw.cuckoo);
+        put(R.string.snd_storm2, R.raw.storm2);
+        put(R.string.snd_nightingale, R.raw.nightingale);
+        put(R.string.snd_forest, R.raw.forest);
+        put(R.string.snd_morning_in_the_forest, R.raw.morning_in_the_forest);
+    }};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +40,7 @@ public class MainActivity extends Activity {
 
         ListView listView = (ListView)findViewById(R.id.listView);
 
-        MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), values);
+        MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(getApplicationContext(), elements.keySet().toArray());
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,14 +49,19 @@ public class MainActivity extends Activity {
                 //убираю иконку паузы у всех элементов
                 setPlayIconForAllElementsInList(parent);
 
-                // получаю нажатый элемент и меняю иконку
-                ImageView imageView = (ImageView)view.findViewById(R.id.icon);
-                imageView.setImageResource(true ? R.drawable.ic_media_pause : R.drawable.ic_media_play);
+                try {
+                    // получаю нажатый элемент и меняю иконку
+                    ImageView imageView = (ImageView)view.findViewById(R.id.icon);
+                    imageView.setImageResource(R.drawable.ic_media_pause);
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "Could not find element.", Toast.LENGTH_LONG).show();
+                }
 
                 // проигрываю звук
                 mediaPlayer.reset();
                 try {
-                    AssetFileDescriptor afd = getResources().openRawResourceFd(sounds[position]);
+                    Integer fileResource = (Integer)elements.values().toArray()[position];
+                    AssetFileDescriptor afd = getResources().openRawResourceFd(fileResource);
                     if (afd == null) {
                         Toast.makeText(getApplicationContext(), "Could not load sound.", Toast.LENGTH_LONG).show();
                         return;
@@ -64,10 +76,10 @@ public class MainActivity extends Activity {
             }
         });
 
+        // событие, происходящее после того как медиа-плеер закончил играть трек
         MediaPlayer.OnCompletionListener completionListener  = new MediaPlayer.OnCompletionListener(){
             @Override
             public void onCompletion(MediaPlayer arg0) {
-                Toast.makeText(getApplicationContext(), "Media playing is complete", Toast.LENGTH_LONG).show();
                 ListView listView = (ListView)findViewById(R.id.listView);
                 //TODO: убрать этот вызов и сделать смену иконки только для текущего трека который играет
                 setPlayIconForAllElementsInList(listView);
@@ -87,6 +99,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.pause();
+    }
 
     public void showAboutActivity(View v) {
         Intent myIntent = new Intent(getApplicationContext(), HelpActivity.class);
