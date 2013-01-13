@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
     String[] values = new String[] {
         "Звук 1", "Звук 2", "Звук 3", "Звук 4", "Звук 5"
@@ -37,11 +39,8 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Object o = parent.getAdapter().getItem(position);
-                String keyword = o.toString();
-                Toast.makeText(getApplicationContext(), "You selected: " + keyword, Toast.LENGTH_SHORT).show();
                 //убираю иконку паузы у всех элементов
+                setPlayIconForAllElementsInList(parent);
 
                 // получаю нажатый элемент и меняю иконку
                 ImageView imageView = (ImageView)view.findViewById(R.id.icon);
@@ -58,14 +57,34 @@ public class MainActivity extends Activity {
                     mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                     afd.close();
                     mediaPlayer.prepare();
-//                    mediaPlayer.start();
+                    mediaPlayer.start();
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Could not load sound.", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+        MediaPlayer.OnCompletionListener completionListener  = new MediaPlayer.OnCompletionListener(){
+            @Override
+            public void onCompletion(MediaPlayer arg0) {
+                Toast.makeText(getApplicationContext(), "Media playing is complete", Toast.LENGTH_LONG).show();
+                ListView listView = (ListView)findViewById(R.id.listView);
+                //TODO: убрать этот вызов и сделать смену иконки только для текущего трека который играет
+                setPlayIconForAllElementsInList(listView);
+            }
+        };
+
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setOnCompletionListener(completionListener);
+    }
+
+    private void setPlayIconForAllElementsInList(AdapterView<?> parent) {
+        ListView lv = (ListView)parent.findViewById(R.id.listView);
+        ArrayList<View> arrayListView = lv.getTouchables();
+        for(View v: arrayListView){
+            ImageView imageView = (ImageView)v.findViewById(R.id.icon);
+            imageView.setImageResource(R.drawable.ic_media_play);
+        }
     }
 
 
