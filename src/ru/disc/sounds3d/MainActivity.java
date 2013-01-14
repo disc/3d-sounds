@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -100,10 +103,37 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mediaPlayer.pause();
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Log.d("Test", "Back button pressed!");
+                mediaPlayer.pause();
+                break;
+            case KeyEvent.KEYCODE_HOME:
+                Log.d("Test", "Home button pressed!");
+                finish();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("Test", "Home button pressed!");
+        super.onStop();
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        mediaPlayer.pause();
+//    }
 
     public void showAboutActivity(View v) {
         Intent myIntent = new Intent(getApplicationContext(), HelpActivity.class);

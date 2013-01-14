@@ -17,4 +17,4 @@
                   android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="ru.disc.sounds3d.HelpActivity"/>
     </application>
-</manifest> 
+</manifest>
