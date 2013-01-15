@@ -8,24 +8,28 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:gravity="center" android:baselineAligned="false"
             android:layout_alignParentBottom="false" android:id="@+id/topButtons"
-            android:layout_alignParentTop="true" android:paddingTop="3dp">
+            android:layout_alignParentTop="true">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/infoButton" android:src="@drawable/info_button_dynamic" android:clickable="true"/>
+                android:id="@+id/infoButton" android:src="@drawable/info_button_dynamic" android:clickable="true"
+                android:padding="3dp"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/repeatButton" android:src="@drawable/repeat_button_dynamic" android:clickable="true"/>
+                android:id="@+id/repeatButton" android:src="@drawable/repeat_button_dynamic" android:clickable="true"
+                android:padding="3dp"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/optionsButton" android:src="@drawable/option_button_dynamic" android:clickable="true"/>
+                android:id="@+id/optionsButton" android:src="@drawable/option_button_dynamic" android:clickable="true"
+                android:padding="3dp"/>
     </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent" android:orientation="horizontal"
-            android:layout_below="@+id/topButtons" android:layout_above="@+id/bottomButtons">
+            android:layout_below="@+id/topButtons" android:layout_above="@+id/bottomButtons"
+            android:id="@+id/elementsList" android:clickable="false">
         <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
@@ -35,7 +39,7 @@
                 android:listSelector="@android:color/transparent"
                 android:cacheColorHint="#00000000"
                 android:layout_below="@+id/topButtons"
-                />
+                android:clickable="false"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"
@@ -46,16 +50,18 @@
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/prevDownButton" android:src="@drawable/prev_button_dynamic" android:clickable="true"/>
+                android:id="@+id/prevDownButton" android:src="@drawable/prev_button_dynamic" android:clickable="true"
+                android:onClick="prevTrackButtonClick"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/playDownButton"
                 android:clickable="true"
-                android:src="@drawable/play_button_dynamic"/>
+                android:src="@drawable/play_button_dynamic" android:onClick="playButtonClick"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/nextDownButton" android:src="@drawable/next_button_dynamic" android:clickable="true"/>
+                android:id="@+id/nextDownButton" android:src="@drawable/next_button_dynamic" android:clickable="true"
+                android:onClick="nextTrackButtonClick"/>
     </LinearLayout>
 </RelativeLayout>
