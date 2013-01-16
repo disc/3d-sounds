@@ -1,19 +1,15 @@
 package ru.disc.sounds3d;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,31 +56,37 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void changeBackgroundForListElement(int position) {
+    private void changeBackgroundForListElement(int position, int direction) {
         try {
             // получаю нажатый элемент и меняю иконку
             ListView listView = (ListView)findViewById(R.id.listView);
-            // меняю фон и иконку для текущего проигрываемого элемента
-            View view = listView.getChildAt(position);
-            TextView elemTitle = (TextView)view.findViewById(R.id.elTitle);
-            elemTitle.setTextColor(Color.BLACK);
-            elemTitle.setBackgroundResource(R.drawable.list_item_act);
-            ImageView imageView = (ImageView)view.findViewById(R.id.icon);
-            imageView.setImageResource(R.drawable.ic_media_pause);
+            // получаю позицию следующего элемента c учетом начального элемента в списке на экране
+            // например, если виден не весь список, а только нижняя часть то надо учитывать getFirstVisiblePosition
+            int localPosition = position > 0 ? position - listView.getFirstVisiblePosition() : position;
+            listView.smoothScrollToPosition(position);
 
-            if (position > 0) {
-                int prevElementPos = position  - 1;
+            // меняю фон и иконку для текущего проигрываемого элемента
+            setBackgroundToListElement(listView, localPosition, 1);
+
+            if (localPosition > 0) {
+                int prevElementPos = direction == 1 ? localPosition  - 1 : localPosition  + 1;
                 // меняю фон и иконку для предыдущего
-                View viewPrev = listView.getChildAt(prevElementPos);
-                TextView elemTitlePrev = (TextView)viewPrev.findViewById(R.id.elTitle);
-                elemTitlePrev.setTextColor(Color.WHITE);
-                elemTitlePrev.setBackgroundResource(R.drawable.list_item);
-                ImageView imageViewPrev = (ImageView)viewPrev.findViewById(R.id.icon);
-                imageViewPrev.setImageResource(R.drawable.ic_media_play);
+
+                setBackgroundToListElement(listView, prevElementPos, 0);
             }
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), "Could not find element.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void setBackgroundToListElement(ListView listView, int position, int active) {
+        boolean status = (active == 1);
+        View view = listView.getChildAt(position);
+        TextView elemTitle = (TextView)view.findViewById(R.id.elTitle);
+        elemTitle.setTextColor(status ? Color.BLACK : Color.WHITE);
+        elemTitle.setBackgroundResource(status ? R.drawable.list_item_act : R.drawable.list_item);
+        ImageView imageView = (ImageView)view.findViewById(R.id.icon);
+        imageView.setImageResource(status ? R.drawable.ic_media_pause : R.drawable.ic_media_play);
     }
 
     /**
@@ -93,6 +95,7 @@ public class MainActivity extends Activity {
      */
     public void nextTrackButtonClick(View v){
         nextSong();
+        changeBackgroundForListElement(currentPosition, 1);
     }
 
     /**
@@ -100,7 +103,9 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void prevTrackButtonClick(View v){
-        playSong(currentPosition > 0 ? --currentPosition : currentPosition);
+        currentPosition = currentPosition > 0 ? --currentPosition : currentPosition;
+        playSong(currentPosition);
+        changeBackgroundForListElement(currentPosition, 0);
     }
 
     /**
@@ -115,13 +120,12 @@ public class MainActivity extends Activity {
             mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
             mediaPlayer.start();
         } else {
-             playSong(currentPosition);
+            playSong(currentPosition);
+            changeBackgroundForListElement(currentPosition, 1);
         }
     }
 
     private void playSong(Integer trackNumber) {
-        changeBackgroundForListElement(trackNumber);
-
         try {
             mediaPlayer.reset();
             Integer fileResource = (Integer)elements.values().toArray()[trackNumber];
