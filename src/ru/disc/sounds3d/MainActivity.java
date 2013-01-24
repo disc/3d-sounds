@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,7 +41,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mediaPlayer.setWakeMode(this.getBaseContext(), PowerManager.SCREEN_DIM_WAKE_LOCK);
 
         // работа со списком
         final ListView listView = (ListView)findViewById(R.id.listView);
@@ -55,9 +53,14 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentPosition = position;
-                adapter.setSelectedPosition(position);
-                playSong(position);
+                // если уже играется трек, ставлю его на паузу
+                if (mediaPlayer.isPlaying() && position == currentPosition) {
+                    playButtonClick(findViewById(R.id.mainView));
+                } else {
+                    currentPosition = position;
+                    adapter.setSelectedPosition(position);
+                    playSong(position);
+                }
             }
         });
     }
@@ -141,48 +144,15 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);
+    public void onBackPressed() {
+        Log.d("Test", "Back button pressed!");
+        finish();
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_HOME:
-                Log.d("Test", "Home button pressed!");
-                finish();
-                break;
-            case KeyEvent.KEYCODE_BACK:
-                Log.d("Test", "Back button pressed!");
-                if (mediaPlayer.isPlaying()) {
-                    playButtonClick(findViewById(R.id.mainView));
-                }
-                finish();
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
 
-    /*
-     * Notify the system to finalize and collect all objects of the
-     * application on exit so that the process running the application can
-     * be killed by the system without causing issues. NOTE: If this is set
-     * to true then the process will not be killed until all of its threads
-     * have closed.
-     */
-        System.runFinalizersOnExit(true);
-
-    /*
-     * Force the system to close the application down completely instead of
-     * retaining it in the background. The process that runs the application
-     * will be killed. The application will be completely created as a new
-     * application in a new process if the user starts the application
-     * again.
-     */
-        System.exit(0);
+        mediaPlayer.stop();
     }
 }
