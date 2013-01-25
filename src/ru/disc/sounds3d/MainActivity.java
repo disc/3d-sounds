@@ -5,16 +5,12 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.app.Activity.*;
 
 public class MainActivity extends Activity {
     private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -26,15 +22,15 @@ public class MainActivity extends Activity {
      * Список элементов вида ключ-значение, где ключ - название трека, значение - путь к файлу
      */
     final public Map<Integer,Integer> elements = new HashMap<Integer,Integer>() {{
-        put(R.string.snd_rain_in_tropics, R.raw.nature);
+        put(R.string.snd_rain_in_tropics, R.raw.rain_in_tropics);
         put(R.string.snd_nature, R.raw.nature);
-        put(R.string.snd_cat_purring, R.raw.nature);
-        put(R.string.snd_wind, R.raw.nature);
-        put(R.string.snd_cuckoo, R.raw.nature);
-        put(R.string.snd_storm2, R.raw.nature);
-        put(R.string.snd_nightingale, R.raw.nature);
-        put(R.string.snd_forest, R.raw.nature);
-        put(R.string.snd_morning_in_the_forest, R.raw.nature);
+        put(R.string.snd_cat_purring, R.raw.cat_purring);
+        put(R.string.snd_wind, R.raw.wind);
+        put(R.string.snd_cuckoo, R.raw.cuckoo);
+        put(R.string.snd_storm2, R.raw.storm2);
+        put(R.string.snd_nightingale, R.raw.nightingale);
+        put(R.string.snd_forest, R.raw.forest);
+        put(R.string.snd_morning_in_the_forest, R.raw.morning_in_the_forest);
     }};
 
     @Override
@@ -145,7 +141,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Log.d("Test", "Back button pressed!");
         finish();
     }
 
