@@ -49,8 +49,8 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // если уже играется трек, ставлю его на паузу
-                if (mediaPlayer.isPlaying() && position == currentPosition) {
+                // если уже играется трек или он стоит на паузе, ставлю его на паузу
+                if ((mediaPlayer.isPlaying() || isPaused) && position == currentPosition) {
                     playButtonClick(findViewById(R.id.mainView));
                 } else {
                     currentPosition = position;
