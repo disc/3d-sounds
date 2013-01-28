@@ -17,8 +17,9 @@
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/repeatButton" android:src="@drawable/repeat_button_dynamic" android:clickable="true"
-                android:padding="3dp"/>
+                android:id="@+id/repeatButton" android:clickable="true"
+                android:onClick="playlistLoopButtonClick"
+                android:background="@drawable/repeat_button_dynamic"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

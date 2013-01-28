@@ -8,15 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MySimpleArrayAdapter extends ArrayAdapter<Object> {
+public class MyArrayAdapter extends ArrayAdapter<Object> {
     private final Context context;
     private final Object[] values;
     private int selectedPos = -1;
 
-    public MySimpleArrayAdapter(Context context, Object[] values) {
+    public MyArrayAdapter(Context context, Object[] values) {
         super(context, R.layout.rowlayout, values);
         this.context = context;
         this.values = values;

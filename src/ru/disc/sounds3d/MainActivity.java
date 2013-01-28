@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -16,7 +17,12 @@ public class MainActivity extends Activity {
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private int currentPosition = 0;
     private boolean isPaused = false;
-    MySimpleArrayAdapter adapter;
+    private boolean isLoopingPlaylist = false;
+
+    private float leftVol = 0f;
+    private float rightVol = 0f;
+    private Runnable increaseVolume, decreaseVolume;
+    MyArrayAdapter adapter;
 
     /**
      * Список элементов вида ключ-значение, где ключ - название трека, значение - путь к файлу
@@ -42,7 +48,7 @@ public class MainActivity extends Activity {
         final ListView listView = (ListView)findViewById(R.id.listView);
 
         // заполняю список элементами из массива
-        adapter = new MySimpleArrayAdapter(getApplicationContext(), elements.keySet().toArray());
+        adapter = new MyArrayAdapter(getApplicationContext(), elements.keySet().toArray());
         listView.setAdapter(adapter);
 
           // обработчик нажатия по элементу списка
@@ -56,6 +62,19 @@ public class MainActivity extends Activity {
                     currentPosition = position;
                     adapter.setSelectedPosition(position);
                     playSong(position);
+                }
+            }
+        });
+
+        final ImageView repeatButton = (ImageView)findViewById(R.id.repeatButton);
+        repeatButton.setOnClickListener(new AdapterView.OnClickListener() {
+            public void onClick(View button) {
+                if (button.isSelected()){
+                    button.setSelected(false);
+                    isLoopingPlaylist = false;
+                } else {
+                    button.setSelected(true);
+                    isLoopingPlaylist = true;
                 }
             }
         });
@@ -93,12 +112,35 @@ public class MainActivity extends Activity {
             playButton.setImageResource(R.drawable.play_button_dynamic);
         } else if (isPaused) {
             mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
+            // fade эффект
+            leftVol = rightVol = 0.20f;
+            mediaPlayer.setVolume(leftVol, rightVol);
+            final Handler h = new Handler();
+            increaseVolume = new Runnable(){
+                public void run(){
+                    mediaPlayer.setVolume(leftVol, rightVol);
+                    if(leftVol < 1.0f){
+                        leftVol += .05f;
+                        rightVol += .05f;
+                        Log.d("Test","volume is up after pause");
+                        h.postDelayed(increaseVolume, 150);
+                    }
+                }
+            };
+            h.post(increaseVolume);
             mediaPlayer.start();
             playButton.setImageResource(R.drawable.pause_button_dynamic);
         } else {
             playSong(currentPosition);
             adapter.setSelectedPosition(currentPosition);
         }
+    }
+
+    /**
+     * Обработчик кнопки "Повторять Playlyst"
+     */
+    public void playlistLoopButtonClick(View v){
+        isLoopingPlaylist = !isLoopingPlaylist;
     }
 
     private void playSong(Integer trackNumber) {
@@ -113,6 +155,42 @@ public class MainActivity extends Activity {
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             afd.close();
             mediaPlayer.prepare();
+
+            // fade эффект
+            leftVol = rightVol = 0;
+            mediaPlayer.setVolume(leftVol, rightVol);
+            final Handler h = new Handler();
+            increaseVolume = new Runnable(){
+                public void run(){
+                    mediaPlayer.setVolume(leftVol, rightVol);
+                    if(leftVol < 1.0f){
+                        leftVol += .05f;
+                        rightVol += .05f;
+                        Log.d("Test","volume is up");
+                        h.postDelayed(increaseVolume, 150);
+                    }
+                }
+            };
+
+            decreaseVolume = new Runnable(){
+                public void run(){
+                    // уменьшаю громкость за 3 секунды до конца
+                    if (mediaPlayer.getCurrentPosition() >= mediaPlayer.getDuration() - 3000) {
+                        mediaPlayer.setVolume(leftVol, rightVol);
+                        if(leftVol > 0f){
+                            leftVol -= .033f;
+                            rightVol -= .033f;
+                            Log.d("Test","volume is down");
+                        }
+                    }
+                    h.postDelayed(decreaseVolume, 100);
+                }
+            };
+
+            //увеличиваю звук при нача
+            h.post(increaseVolume);
+            h.post(decreaseVolume);
+            //
             mediaPlayer.start();
 
             final ImageView playButton = (ImageView)findViewById(R.id.playDownButton);
@@ -133,7 +211,6 @@ public class MainActivity extends Activity {
     private void nextSong() {
         if (++currentPosition >= elements.size()) {
             // если конец списка начинаю сначала
-            //TODO: добавить проверку что включен repeat
             currentPosition = 0;
         }
         playSong(currentPosition);

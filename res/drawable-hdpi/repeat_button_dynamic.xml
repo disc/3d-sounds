@@ -2,5 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true" android:drawable="@drawable/ic_repeat_button" /> <!-- focused -->
     <item android:state_pressed="true" android:drawable="@drawable/ic_repeat_button_act" /> <!-- pressed -->
+    <item android:state_selected="true" android:drawable="@drawable/ic_repeat_button_selected"/> <!-- selected -->
     <item android:drawable="@drawable/ic_repeat_button" /> <!-- default -->
 </selector>
