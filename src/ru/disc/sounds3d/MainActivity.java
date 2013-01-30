@@ -1,6 +1,8 @@
 package ru.disc.sounds3d;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.content.ContentValues;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,7 +17,7 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private int currentPosition = 0;
+    private int currentPosition = -1;
     private boolean isPaused = false;
     private boolean isLoopingPlaylist = false;
 
@@ -110,6 +112,7 @@ public class MainActivity extends Activity {
             isPaused = true;
             mediaPlayer.pause();
             playButton.setImageResource(R.drawable.play_button_dynamic);
+            adapter.changeState(MyArrayAdapter.STATE_PAUSE);
         } else if (isPaused) {
             mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
             // fade эффект
@@ -130,7 +133,9 @@ public class MainActivity extends Activity {
             h.post(increaseVolume);
             mediaPlayer.start();
             playButton.setImageResource(R.drawable.pause_button_dynamic);
+            adapter.changeState(MyArrayAdapter.STATE_PLAY);
         } else {
+            currentPosition = currentPosition == -1 ? 0 : currentPosition;
             playSong(currentPosition);
             adapter.setSelectedPosition(currentPosition);
         }
@@ -200,6 +205,7 @@ public class MainActivity extends Activity {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 public void onCompletion(MediaPlayer arg0) {
                     Log.d("Test", "And the next song!");
+                    playButton.setImageResource(R.drawable.play_button_dynamic);
                     nextTrackButtonClick(playButton.getRootView());
                 }
             });
@@ -211,9 +217,11 @@ public class MainActivity extends Activity {
     private void nextSong() {
         if (++currentPosition >= elements.size()) {
             // если конец списка начинаю сначала
-            currentPosition = 0;
+            currentPosition = isLoopingPlaylist ? 0 : -1;
         }
-        playSong(currentPosition);
+        if (currentPosition != -1) {
+            playSong(currentPosition);
+        }
     }
 
     @Override

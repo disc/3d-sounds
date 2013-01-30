@@ -12,6 +12,10 @@ public class MyArrayAdapter extends ArrayAdapter<Object> {
     private final Context context;
     private final Object[] values;
     private int selectedPos = -1;
+    private int currentState = STATE_STOP;
+    public static final int STATE_STOP = -1;
+    public static final int STATE_PAUSE = 0;
+    public static final int STATE_PLAY = 1;
 
     public MyArrayAdapter(Context context, Object[] values) {
         super(context, R.layout.rowlayout, values);
@@ -21,12 +25,17 @@ public class MyArrayAdapter extends ArrayAdapter<Object> {
 
     public void setSelectedPosition(int pos){
         selectedPos = pos;
+        changeState(STATE_PLAY);
         // inform the view of this change
-        notifyDataSetChanged();
     }
 
     public int getSelectedPosition(){
         return selectedPos;
+    }
+
+    public void changeState(int state) {
+        currentState = state;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,6 +55,10 @@ public class MyArrayAdapter extends ArrayAdapter<Object> {
         if (selectedPos == position) {
             titleDrawableResId = R.drawable.list_item_act;
             iconDrawableResId = R.drawable.ic_media_pause;
+
+            if (currentState == STATE_PAUSE) {
+                iconDrawableResId = R.drawable.ic_media_play;
+            }
         } else {
             titleDrawableResId = R.drawable.list_item;
             iconDrawableResId = R.drawable.ic_media_play;
