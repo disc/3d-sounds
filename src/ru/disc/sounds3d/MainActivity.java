@@ -14,6 +14,7 @@ import android.widget.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.ads.*;
 
 public class MainActivity extends Activity {
     private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -45,6 +46,20 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        // Создание экземпляра adView.
+        AdView adView = new AdView(this, AdSize.BANNER, "ca-app-pub-5447944917928913/9190037822");
+
+        // Поиск разметки LinearLayout (предполагается, что ей был присвоен
+        // атрибут android:id="@+id/mainLayout").
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.mainView);
+
+        // Добавление в разметку экземпляра adView.
+        layout.addView(adView);
+
+        // Инициирование общего запроса на загрузку с объявлением.
+        adView.loadAd(new AdRequest());
+
 
         // работа со списком
         final ListView listView = (ListView)findViewById(R.id.listView);

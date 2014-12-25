@@ -1,6 +1,8 @@
 package ru.disc.sounds3d;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,7 @@ public class MyArrayAdapter extends ArrayAdapter<Object> {
         notifyDataSetChanged();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
